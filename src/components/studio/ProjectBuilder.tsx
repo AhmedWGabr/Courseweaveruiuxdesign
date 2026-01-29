@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { Award, Plus, Trash2, ChevronRight, ChevronLeft, Sparkles } from 'lucide-react';
 
 interface ProjectBuilderProps {
+  initialProjectTitle?: string;
+  initialProjectDescription?: string;
+  initialRequirements?: string[];
+  initialRubric?: { criterion: string; points: number }[];
   onNext: (data: {
     projectTitle: string;
     projectDescription: string;
@@ -11,24 +15,35 @@ interface ProjectBuilderProps {
   onBack: () => void;
 }
 
-export function ProjectBuilder({ onNext, onBack }: ProjectBuilderProps) {
-  const [projectTitle, setProjectTitle] = useState('Build a Reusable Data Table Component');
+export function ProjectBuilder({ 
+  initialProjectTitle,
+  initialProjectDescription,
+  initialRequirements,
+  initialRubric,
+  onNext, 
+  onBack 
+}: ProjectBuilderProps) {
+  const [projectTitle, setProjectTitle] = useState(initialProjectTitle || 'Build a Reusable Data Table Component');
   const [projectDescription, setProjectDescription] = useState(
-    'Create a flexible, accessible data table component using compound component patterns. This capstone project will test your understanding of React patterns and component architecture.'
+    initialProjectDescription || 'Create a flexible, accessible data table component using compound component patterns. This capstone project will test your understanding of React patterns and component architecture.'
   );
-  const [requirements, setRequirements] = useState([
-    'Use compound component pattern',
-    'Support sorting and filtering',
-    'Implement keyboard navigation',
-    'Add loading and error states',
-    'Include comprehensive TypeScript types'
-  ]);
-  const [rubric, setRubric] = useState([
-    { criterion: 'Correct implementation of compound components', points: 30 },
-    { criterion: 'Accessibility features', points: 25 },
-    { criterion: 'Code quality and TypeScript usage', points: 25 },
-    { criterion: 'Testing and documentation', points: 20 }
-  ]);
+  const [requirements, setRequirements] = useState(
+    initialRequirements || [
+      'Use compound component pattern',
+      'Support sorting and filtering',
+      'Implement keyboard navigation',
+      'Add loading and error states',
+      'Include comprehensive TypeScript types'
+    ]
+  );
+  const [rubric, setRubric] = useState(
+    initialRubric || [
+      { criterion: 'Correct implementation of compound components', points: 30 },
+      { criterion: 'Accessibility features', points: 25 },
+      { criterion: 'Code quality and TypeScript usage', points: 25 },
+      { criterion: 'Testing and documentation', points: 20 }
+    ]
+  );
 
   const handleAddRequirement = () => {
     setRequirements([...requirements, '']);

@@ -2,22 +2,27 @@ import { useState } from 'react';
 import { Sparkles, ChevronRight, ChevronLeft, FileText } from 'lucide-react';
 
 interface NotesEditorProps {
+  initialSummary?: string;
+  initialKeyTakeaways?: string[];
+  initialDeepDive?: string;
   onNext: (data: { summary: string; keyTakeaways: string[]; deepDive: string }) => void;
   onBack: () => void;
 }
 
-export function NotesEditor({ onNext, onBack }: NotesEditorProps) {
+export function NotesEditor({ initialSummary, initialKeyTakeaways, initialDeepDive, onNext, onBack }: NotesEditorProps) {
   const [summary, setSummary] = useState(
-    'This module introduces compound components, a powerful React pattern that enables flexible component composition by allowing parent and child components to share state implicitly through Context API.'
+    initialSummary || 'This module introduces compound components, a powerful React pattern that enables flexible component composition by allowing parent and child components to share state implicitly through Context API.'
   );
-  const [keyTakeaways, setKeyTakeaways] = useState([
-    'Compound components create flexible, composable APIs similar to native HTML elements',
-    'Context API enables implicit state sharing between parent and child components',
-    'This pattern reduces prop drilling and makes components more maintainable',
-    'Real-world examples include Select/Option, Tabs, and Accordion components'
-  ]);
+  const [keyTakeaways, setKeyTakeaways] = useState(
+    initialKeyTakeaways || [
+      'Compound components create flexible, composable APIs similar to native HTML elements',
+      'Context API enables implicit state sharing between parent and child components',
+      'This pattern reduces prop drilling and makes components more maintainable',
+      'Real-world examples include Select/Option, Tabs, and Accordion components'
+    ]
+  );
   const [deepDive, setDeepDive] = useState(
-    'The compound component pattern leverages React\'s Context API to create a parent component that manages state and provides it to child components without explicit prop passing. This approach offers several advantages over traditional component composition.\n\nBy using this pattern, developers can create components that feel natural to use, similar to how native HTML elements work together. The parent component acts as a container that orchestrates behavior, while child components handle their own rendering logic while accessing shared state.'
+    initialDeepDive || 'The compound component pattern leverages React\'s Context API to create a parent component that manages state and provides it to child components without explicit prop passing. This approach offers several advantages over traditional component composition.\n\nBy using this pattern, developers can create components that feel natural to use, similar to how native HTML elements work together. The parent component acts as a container that orchestrates behavior, while child components handle their own rendering logic while accessing shared state.'
   );
 
   const handleAddTakeaway = () => {

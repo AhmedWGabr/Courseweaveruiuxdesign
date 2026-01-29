@@ -8,11 +8,12 @@ interface AppStore {
   apiKeys: {
     gemini?: string;
     openai?: string;
+    anthropic?: string;
   };
   toggleOfflineMode: () => void;
   toggleSidebar: () => void;
   setSelectedModel: (model: string) => void;
-  setApiKey: (provider: 'gemini' | 'openai', key: string) => void;
+  setApiKey: (provider: 'gemini' | 'openai' | 'anthropic', key: string) => void;
 }
 
 export const useAppStore = create<AppStore>()(

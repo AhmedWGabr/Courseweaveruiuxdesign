@@ -15,12 +15,14 @@ interface CourseReviewProps {
     requirements: string[];
     rubric: { criterion: string; points: number }[];
   };
+  isEditMode?: boolean;
+  existingCourseName?: string;
   onBack: () => void;
 }
 
-export function CourseReview({ courseData, onBack }: CourseReviewProps) {
+export function CourseReview({ courseData, isEditMode, existingCourseName, onBack }: CourseReviewProps) {
   const navigate = useNavigate();
-  const [courseName, setCourseName] = useState('Advanced React Patterns');
+  const [courseName, setCourseName] = useState(existingCourseName || 'Advanced React Patterns');
   const [isSaving, setIsSaving] = useState(false);
 
   const handlePublish = () => {
@@ -29,7 +31,11 @@ export function CourseReview({ courseData, onBack }: CourseReviewProps) {
     // Simulate saving
     setTimeout(() => {
       setIsSaving(false);
-      alert('Course published successfully!');
+      if (isEditMode) {
+        alert('Course updated successfully!');
+      } else {
+        alert('Course published successfully!');
+      }
       navigate('/library');
     }, 2000);
   };
@@ -175,12 +181,12 @@ export function CourseReview({ courseData, onBack }: CourseReviewProps) {
           {isSaving ? (
             <>
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              Publishing...
+              {isEditMode ? 'Updating...' : 'Publishing...'}
             </>
           ) : (
             <>
               <Save className="w-5 h-5" />
-              Publish Course
+              {isEditMode ? 'Update Course' : 'Publish Course'}
             </>
           )}
         </button>

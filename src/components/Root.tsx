@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router';
-import { LayoutDashboard, Library, Sparkles, Settings as SettingsIcon, WifiOff, Wifi, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Library, Sparkles, Settings as SettingsIcon, WifiOff, Wifi, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAppStore } from '../lib/store';
 import { useState } from 'react';
 
@@ -20,7 +20,7 @@ export function Root() {
       {/* Mobile Overlay */}
       {mobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black/80 z-20 lg:hidden"
+          className="fixed inset-0 bg-black/80 z-20 md:hidden"
           onClick={closeMobileMenu}
         />
       )}
@@ -30,42 +30,51 @@ export function Root() {
         className={`${
           sidebarCollapsed ? 'w-20' : 'w-64'
         } bg-[#0F1115] border-r border-slate-800 flex flex-col transition-all duration-300 fixed h-full z-30 
-        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
+        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
       >
         {/* Logo */}
-        <div className="h-16 flex items-center px-6 border-b border-slate-800 justify-between">
-          {!sidebarCollapsed && (
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                <Sparkles className="w-5 h-5" />
+        <div className="h-16 flex items-center px-4 lg:px-6 border-b border-slate-800 justify-between">
+          <div className="flex items-center gap-3">
+            {/* Hamburger/Menu Button - All Screens */}
+            <button
+              onClick={() => {
+                // Mobile: toggle slide-in menu
+                if (window.innerWidth < 768) {
+                  setMobileMenuOpen(!mobileMenuOpen);
+                } else {
+                  // Desktop/Tablet: toggle collapse
+                  toggleSidebar();
+                }
+              }}
+              className="text-slate-400 hover:text-slate-200 transition-colors"
+              title={sidebarCollapsed ? 'Expand sidebar' : 'Menu'}
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+
+            {/* Logo - Show when expanded */}
+            {!sidebarCollapsed && (
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <span className="font-semibold text-base lg:text-lg">CourseWeaver</span>
               </div>
-              <span className="font-semibold text-lg">CourseWeaver</span>
-            </div>
-          )}
-          {sidebarCollapsed && (
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center mx-auto">
-              <Sparkles className="w-5 h-5" />
-            </div>
-          )}
-          {/* Mobile Close Button */}
-          <button
-            onClick={closeMobileMenu}
-            className="lg:hidden text-slate-400 hover:text-slate-200"
-          >
-            <X className="w-5 h-5" />
-          </button>
+            )}
+          </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-3 lg:p-4 space-y-1 lg:space-y-2">
           <Link
             to="/"
             onClick={closeMobileMenu}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+            className={`flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg transition-colors text-sm lg:text-base ${
               isActive('/') && location.pathname === '/'
                 ? 'bg-indigo-600 text-white'
                 : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
             }`}
+            title={sidebarCollapsed ? 'Dashboard' : ''}
           >
             <LayoutDashboard className="w-5 h-5 flex-shrink-0" />
             {!sidebarCollapsed && <span>Dashboard</span>}
@@ -73,11 +82,12 @@ export function Root() {
           <Link
             to="/library"
             onClick={closeMobileMenu}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+            className={`flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg transition-colors text-sm lg:text-base ${
               isActive('/library')
                 ? 'bg-indigo-600 text-white'
                 : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
             }`}
+            title={sidebarCollapsed ? 'Library' : ''}
           >
             <Library className="w-5 h-5 flex-shrink-0" />
             {!sidebarCollapsed && <span>Library</span>}
@@ -85,11 +95,12 @@ export function Root() {
           <Link
             to="/studio"
             onClick={closeMobileMenu}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+            className={`flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg transition-colors text-sm lg:text-base ${
               isActive('/studio')
                 ? 'bg-indigo-600 text-white'
                 : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
             }`}
+            title={sidebarCollapsed ? 'Studio' : ''}
           >
             <Sparkles className="w-5 h-5 flex-shrink-0" />
             {!sidebarCollapsed && <span>Studio</span>}
@@ -97,11 +108,12 @@ export function Root() {
           <Link
             to="/settings"
             onClick={closeMobileMenu}
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+            className={`flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg transition-colors text-sm lg:text-base ${
               isActive('/settings')
                 ? 'bg-indigo-600 text-white'
                 : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
             }`}
+            title={sidebarCollapsed ? 'Settings' : ''}
           >
             <SettingsIcon className="w-5 h-5 flex-shrink-0" />
             {!sidebarCollapsed && <span>Settings</span>}
@@ -109,14 +121,15 @@ export function Root() {
         </nav>
 
         {/* Offline Mode Toggle */}
-        <div className="p-4 border-t border-slate-800">
+        <div className="p-3 lg:p-4 border-t border-slate-800">
           <button
             onClick={toggleOfflineMode}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+            className={`w-full flex items-center gap-3 px-3 lg:px-4 py-2.5 lg:py-3 rounded-lg transition-colors text-sm lg:text-base ${
               offlineMode
                 ? 'bg-emerald-600 text-white'
                 : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
             }`}
+            title={sidebarCollapsed ? (offlineMode ? 'Offline Mode' : 'Online Mode') : ''}
           >
             {offlineMode ? (
               <WifiOff className="w-5 h-5 flex-shrink-0" />
@@ -128,7 +141,7 @@ export function Root() {
             )}
           </button>
           {!sidebarCollapsed && offlineMode && (
-            <p className="text-xs text-emerald-400 mt-2 px-4">
+            <p className="text-xs text-emerald-400 mt-2 px-3 lg:px-4">
               All features available offline
             </p>
           )}
@@ -136,22 +149,18 @@ export function Root() {
       </aside>
 
       {/* Main Content */}
-      <main className={`flex-1 ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'} transition-all duration-300`}>
-        {/* Hamburger Button */}
-        <div className="fixed top-4 left-4 z-20">
-          <button
-            onClick={() => {
-              setMobileMenuOpen(!mobileMenuOpen);
-              // On desktop, toggle sidebar collapse
-              if (window.innerWidth >= 1024) {
-                toggleSidebar();
-              }
-            }}
-            className="w-10 h-10 bg-[#0F1115] border border-slate-800 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-        </div>
+      <main className={`flex-1 ${sidebarCollapsed ? 'md:ml-20' : 'md:ml-64'} transition-all duration-300`}>
+        {/* Mobile Hamburger Button - Only visible on mobile when sidebar is hidden */}
+        {!mobileMenuOpen && (
+          <div className="fixed top-4 left-4 z-20 md:hidden">
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="w-10 h-10 bg-[#0F1115] border border-slate-800 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors shadow-lg"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+          </div>
+        )}
         
         <Outlet />
       </main>

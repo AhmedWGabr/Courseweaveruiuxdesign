@@ -3,12 +3,14 @@ import { Sparkles, Scissors, Users, Plus, Trash2, ChevronRight, ChevronLeft } fr
 import { type TranscriptBlock, type Chapter } from '../../lib/mockData';
 
 interface TranscriptEditorProps {
+  initialTranscript?: TranscriptBlock[];
+  initialChapters?: Chapter[];
   onNext: (data: { transcript: TranscriptBlock[]; chapters: Chapter[] }) => void;
   onBack: () => void;
 }
 
-export function TranscriptEditor({ onNext, onBack }: TranscriptEditorProps) {
-  const [transcript, setTranscript] = useState<TranscriptBlock[]>([
+export function TranscriptEditor({ initialTranscript, initialChapters, onNext, onBack }: TranscriptEditorProps) {
+  const [transcript, setTranscript] = useState<TranscriptBlock[]>(initialTranscript || [
     {
       id: 't1',
       timestamp: '00:00',
@@ -39,7 +41,7 @@ export function TranscriptEditor({ onNext, onBack }: TranscriptEditorProps) {
     },
   ]);
 
-  const [chapters, setChapters] = useState<Chapter[]>([
+  const [chapters, setChapters] = useState<Chapter[]>(initialChapters || [
     {
       id: 'c1',
       title: 'Introduction to Compound Components',
